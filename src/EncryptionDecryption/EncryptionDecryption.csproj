@@ -7,9 +7,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Encryption\" />
-      <Folder Include="Interfaces\" />
-    </ItemGroup>
-
 </Project>

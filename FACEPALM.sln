@@ -1,18 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FACEPALM", "FACEPALM\FACEPALM.csproj", "{BB815ECB-EC81-4DD2-B0CC-6AECF5D68D45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FACEPALM", "src\FACEPALM\FACEPALM.csproj", "{BB815ECB-EC81-4DD2-B0CC-6AECF5D68D45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption", "EncryptionDecryption\EncryptionDecryption.csproj", "{064E1BCE-83AF-4C75-AEB0-3C757980B5AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption", "src\EncryptionDecryption\EncryptionDecryption.csproj", "{064E1BCE-83AF-4C75-AEB0-3C757980B5AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption.Tests", "Tests\EncryptionDecryption.Tests\EncryptionDecryption.Tests.csproj", "{231B6E2E-210C-4CFF-B4D7-66A494F5DDA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption.Tests", "src\Tests\EncryptionDecryption.Tests\EncryptionDecryption.Tests.csproj", "{231B6E2E-210C-4CFF-B4D7-66A494F5DDA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serializer", "Serializer\Serializer.csproj", "{EFA1CEC0-5FB8-4EB9-ADC0-F31D222D8945}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSerializer", "src\DeSerializer\DeSerializer.csproj", "{EFA1CEC0-5FB8-4EB9-ADC0-F31D222D8945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serializer.Tests", "Tests\Serializer.Tests\Serializer.Tests.csproj", "{25B5F301-EBD1-4582-8AB1-05E6DBD8BF02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSerializer.Tests", "src\Tests\DeSerializer.Tests\DeSerializer.Tests.csproj", "{25B5F301-EBD1-4582-8AB1-05E6DBD8BF02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader.Tests", "Tests\Uploader.Tests\Uploader.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader.Tests", "src\Tests\Uploader.Tests\Uploader.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "src\Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
