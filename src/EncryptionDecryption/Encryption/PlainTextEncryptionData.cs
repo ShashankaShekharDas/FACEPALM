@@ -1,8 +1,9 @@
+using System.Text;
 using EncryptionDecryption.Interfaces;
 
 namespace EncryptionDecryption.Encryption;
 
 public sealed class PlainTextEncryptionData : IEncryptData
 {
-    public string EncryptData(string data) => data;
+    public byte[] EncryptData(string data) => Encoding.UTF32.GetBytes(data);
 }

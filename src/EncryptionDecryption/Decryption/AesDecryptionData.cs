@@ -8,18 +8,19 @@ public class AesDecryptionData : IDecryptData
 {    
     private readonly Aes _aes;
 
-    public AesDecryptionData(string key)
+    public AesDecryptionData(string key, string iv)
     {
         _aes = Aes.Create();
         _aes.Key = Encoding.UTF8.GetBytes(key);
+        _aes.IV = Encoding.UTF8.GetBytes(iv);
     }
     
-    public string EncryptData(string encodedText)
+    public string DecryptData(byte[] encodedByteArray)
     {
         # region Conditions
-        if (encodedText is not { Length: > 0 })
+        if (encodedByteArray is not { Length: > 0 })
         {
-            return encodedText;
+            return string.Empty;
         }
         if (_aes.Key is not { Length: > 0 })
         {
@@ -33,11 +34,20 @@ public class AesDecryptionData : IDecryptData
 
         #region Decrypt
         var aesDecryptor = _aes.CreateDecryptor(_aes.Key, _aes.IV);
-        using var decryptedMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(encodedText));
-        using var decryptedCryptoStream = new CryptoStream(decryptedMemoryStream, aesDecryptor, CryptoStreamMode.Read);
-        using var decryptedStreamReader = new StreamReader(decryptedCryptoStream);
+        string plainText;
+        using (var decryptedMemoryStream = new MemoryStream(encodedByteArray))
+        {
+            using (var decryptedCryptoStream =
+                   new CryptoStream(decryptedMemoryStream, aesDecryptor, CryptoStreamMode.Read))
+            {
+                using (var decryptedStreamReader = new StreamReader(decryptedCryptoStream))
+                {
+                    plainText = decryptedStreamReader.ReadToEnd();
+                }
+            }
+        }
         #endregion
-        
-        return decryptedStreamReader.ReadToEnd();
+
+        return plainText;
     }
 }

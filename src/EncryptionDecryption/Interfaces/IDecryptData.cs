@@ -2,5 +2,5 @@ namespace EncryptionDecryption.Interfaces;
 
 public interface IDecryptData
 {
-    public string EncryptData(string encodedText);
+    public string DecryptData(byte[] encodedByteArray);
 }
