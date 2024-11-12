@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader.Tests", "src\Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "src\Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "src\Commons\Commons.csproj", "{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Test", "src\Tests\Commons.Test\Commons.Test.csproj", "{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,13 @@ Global
 		{15F38B24-46CC-4753-9425-6C67B9D69675}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15F38B24-46CC-4753-9425-6C67B9D69675}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15F38B24-46CC-4753-9425-6C67B9D69675}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
