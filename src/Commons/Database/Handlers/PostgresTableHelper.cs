@@ -48,18 +48,11 @@ public static class PostgresTableHelper
 
         return sb.ToString();
     }
-
+    
     private static string MapCSharpTypeToPostgresType(Type type)
     {
         if (type == typeof(int) || type.IsEnum) return "INTEGER";
         if (type == typeof(string)) return "TEXT";
-        if (type == typeof(DateTime)) return "TIMESTAMP";
-        if (type == typeof(bool)) return "BOOLEAN";
-        if (type == typeof(float)) return "REAL";
-        if (type == typeof(double)) return "DOUBLE PRECISION";
-        if (type == typeof(decimal)) return "NUMERIC";
-        if (type == typeof(Guid)) return "UUID";
-
         throw new NotSupportedException($"C# type {type.Name} is not supported.");
     }
 }
