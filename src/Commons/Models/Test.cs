@@ -4,7 +4,7 @@ using Npgsql;
 
 namespace Commons.Models;
 
-public class Test(int colA, string colB) : BaseDatabaseModels
+public class Test(int colA, string colB) : IDatabaseModels
 {
     public int ColA { get; set; } = colA;
     public string ColB { get; set; } = colB;

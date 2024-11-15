@@ -5,5 +5,8 @@ namespace EncryptionDecryption.Decryption;
 
 public sealed class PlainTextDecryptionData : IDecryptData
 {
-    public string DecryptData(byte[] encodedByteArray) => Encoding.UTF32.GetString(encodedByteArray);
+    public string DecryptData(byte[] encodedByteArray)
+    {
+        return Encoding.UTF32.GetString(encodedByteArray);
+    }
 }

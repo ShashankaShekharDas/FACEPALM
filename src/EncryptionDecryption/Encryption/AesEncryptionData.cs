@@ -10,33 +10,26 @@ public sealed class AesEncryptionData : IEncryptData
 
     public AesEncryptionData(string key, string iv)
     {
+        if (key is not { Length: > 0 }) throw new ArgumentNullException(nameof(key));
+        if (iv is not { Length: > 0 }) throw new ArgumentNullException(nameof(iv));
         _aes = Aes.Create();
         _aes.Key = Encoding.UTF8.GetBytes(key);
         _aes.IV = Encoding.UTF8.GetBytes(iv);
     }
-    
+
     public byte[] EncryptData(string plainText)
     {
         #region Conditions
 
-        if (plainText is not { Length: > 0 })
-        {
-            return [];
-        }
-        if (_aes.Key is not { Length: > 0 })
-        {
-            throw new ArgumentNullException(nameof(_aes.Key));
-        }
-        if (_aes.IV is not { Length: > 0 })
-        {
-            throw new ArgumentNullException(nameof(_aes.IV));
-        }
+        if (plainText is not { Length: > 0 }) return [];
+
         #endregion
-        
+
         #region Encryption
 
         byte[] encryptedText;
         var encryptor = _aes.CreateEncryptor(_aes.Key, _aes.IV);
+
         using (var encryptedMemoryStream = new MemoryStream())
         {
             using (var encryptedCryptoStream =
@@ -47,10 +40,12 @@ public sealed class AesEncryptionData : IEncryptData
                     encryptedStreamWriter.Write(plainText);
                 }
             }
+
             encryptedText = encryptedMemoryStream.ToArray();
         }
+
         #endregion
-        
+
         return encryptedText;
     }
 }
