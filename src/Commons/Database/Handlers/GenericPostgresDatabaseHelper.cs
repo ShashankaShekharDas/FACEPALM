@@ -16,11 +16,12 @@ public class GenericPostgresDatabaseHelper<T> : IGenericDatabaseHelper<T>
         }
         
         var tableName = typeof(T).Name;
-        var columns = new List<string>();
-        var values = new List<string>();
+        var rowsModified = 0;
         
         foreach (var row in rowsToInsert)
         {
+            var columns = new List<string>();
+            var values = new List<string>();
             foreach (var property in row.GetType().GetProperties())
             {
                 var value = property.GetValue(row);
@@ -38,57 +39,48 @@ public class GenericPostgresDatabaseHelper<T> : IGenericDatabaseHelper<T>
                 }
                 values.Add(value.ToString()!);
             }
+            
+            var insertQuery = PostgresDatabaseConstants.InsertQuery
+                .Replace("{tableName}", tableName)
+                .Replace("{commaSeparatedColumns}", string.Join(",", columns))
+                .Replace("{commaSeparatedPlaceHolders}", string.Join(",", values.Select(value => $"'{value}'")));
+
+            await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
+            await using var npgsqlCommand = dataSource.CreateCommand(insertQuery);
+        
+            var rowModified = await npgsqlCommand.ExecuteNonQueryAsync();
+            rowsModified += rowModified;
         }
         
-        var insertQuery = PostgresDatabaseConstants.InsertQuery
-            .Replace("{tableName}", tableName)
-            .Replace("{commaSeparatedColumns}", string.Join(",", columns))
-            .Replace("{commaSeparatedPlaceHolders}", string.Join(",", values.Select(value => $"'{value}'")));
-
-        await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
-        await using var npgsqlCommand = dataSource.CreateCommand(insertQuery);
-        
-        var rowsModified = await npgsqlCommand.ExecuteNonQueryAsync();
-        
-        return rowsModified == 1;
+        return rowsModified == rowsToInsert.Count;
     }
 
-    public async Task<List<T>> SearchRows(List<WhereClause>? conditions)
+    public async Task<List<T>> SearchRows(List<WhereClause>? conditions, Func<NpgsqlDataReader, T> readerDeserializer)
     {
         var resultList = new List<T>();
-        var combinedWhereClause = new List<string>();
-
-        if (conditions != null)
-        {
-            combinedWhereClause.AddRange(conditions.Select(whereClause => $"{whereClause.ColumnName} = '{whereClause.Value}'"));
-        }
-        
         var tableName = typeof(T).Name;
-        var whereClause = string.Empty;
-        if (combinedWhereClause.Any())
-        {
-            whereClause = $"WHERE {string.Join("AND", combinedWhereClause)}";
-        }
-        var selectQuery = PostgresDatabaseConstants.SelectQuery.Replace("{tableName}", tableName).Replace("{whereClause}", whereClause);
+        var selectQuery = PostgresDatabaseConstants.SelectQuery.Replace("{tableName}", tableName).Replace("{whereClause}", WhereClause.GenerateWhereClause(conditions));
         
         await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
         await using var npgsqlCommand = dataSource.CreateCommand(selectQuery);
         var reader = await npgsqlCommand.ExecuteReaderAsync();
 
-        // ISSUE : GET ALL COLUMNS COUNT THEN GET THE COLUMNS
         while (await reader.ReadAsync())
         {
-            switch (tableName)
-            {
-                case "Test":
-                    resultList.Add(Test.Deserialize(reader) as T);
-                    break;
-                default:
-                    resultList.Add(ChunkInformation.Deserialize(reader) as T);
-                    break;
-            }
+            resultList.Add(readerDeserializer(reader));
         }
         
         return resultList;
+    }
+
+    public async Task<bool> DeleteRows(List<WhereClause>? conditions)
+    {
+        var tableName = typeof(T).Name;
+        var deleteQuery = PostgresDatabaseConstants.DeleteQuery.Replace("{tableName}", tableName).Replace("{whereClause}", WhereClause.GenerateWhereClause(conditions));
+        await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
+        await using var npgsqlCommand = dataSource.CreateCommand(deleteQuery);
+        var rowsAffected = await npgsqlCommand.ExecuteNonQueryAsync();
+
+        return rowsAffected >= 1;
     }
 }

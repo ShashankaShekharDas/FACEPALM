@@ -7,7 +7,7 @@ using Npgsql;
 using System;
 using System.Text;
 
-public sealed class PostgresTableCreator()
+public sealed class PostgresTableHelper()
 {
     public async Task CreateTableAsync<T>() where T : BaseDatabaseModels
     {
@@ -20,8 +20,20 @@ public sealed class PostgresTableCreator()
         await using var command = new NpgsqlCommand(createTableQuery, connection);
         await command.ExecuteNonQueryAsync();
     }
+    
+    public async Task DeleteTableAsync<T>() where T : BaseDatabaseModels
+    {
+        var tableName = typeof(T).Name;
+        var deleteTableQuery = $"DROP TABLE {tableName} CASCADE";
 
-    private string GenerateCreateTableQuery<T>(string tableName) where T : class
+        await using var connection = new NpgsqlConnection(PostgresDatabaseConstants.ConnectionString);
+        await connection.OpenAsync();
+
+        await using var command = new NpgsqlCommand(deleteTableQuery, connection);
+        await command.ExecuteNonQueryAsync();
+    }
+
+    private string GenerateCreateTableQuery<T>(string tableName) where T : BaseDatabaseModels
     {
         var sb = new StringBuilder();
         sb.AppendLine($"CREATE TABLE IF NOT EXISTS {tableName} (");
