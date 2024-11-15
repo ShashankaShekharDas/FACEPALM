@@ -61,6 +61,6 @@ public class GenericPostgresDatabaseHelperTest
 
         var searchResult = await _helper.SearchRows(whereClause, TestDatabase.Deserialize);
 
-        Assert.That(searchResult.Count(), Is.EqualTo(expectedCount));
+        Assert.That(searchResult.Count, Is.EqualTo(expectedCount));
     }
 }
