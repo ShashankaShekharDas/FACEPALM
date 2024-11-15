@@ -5,8 +5,8 @@ namespace Commons.Test.Models;
 
 public class TestDatabase(int colA, string colB) : IDatabaseModels
 {
-    public int ColA { get; set; } = colA;
-    public string ColB { get; set; } = colB;
+    public int ColA { get; } = colA;
+    public string ColB { get; } = colB;
 
     public static TestDatabase Deserialize(NpgsqlDataReader reader)
     {

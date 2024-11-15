@@ -2,8 +2,8 @@ namespace Commons.Database;
 
 public sealed class WhereClause(string? columnName, string? value)
 {
-    private string? ColumnName { get; set; } = columnName; //Null values handled inside generate function
-    private string? Value { get; set; } = value;
+    private string? ColumnName { get; } = columnName; //Null values handled inside generate function
+    private string? Value { get; } = value;
 
     public static string GenerateWhereClause(List<WhereClause>? conditions)
     {
