@@ -4,16 +4,20 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Dropbox.Api" Version="7.0.0" />
         <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
         <PackageReference Include="Google.Apis.Discovery.v1" Version="1.68.0" />
         <PackageReference Include="Google.Apis.Drive.v3" Version="1.68.0.3587" />
+        <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.Net.Requests" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
