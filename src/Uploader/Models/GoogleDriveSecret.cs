@@ -16,8 +16,24 @@ public class GoogleDriveSecret(string fileName, string content, string folderId)
         return JsonSerializer.Serialize(googleDriveSecretObject);
     }
 
-    public static GoogleDriveSecret? GetDeserializedContent(string serializedSecretObject)
+    public static GoogleDriveSecret GetDeserializedContent(string serializedSecretObject)
     {
-        return JsonSerializer.Deserialize<GoogleDriveSecret>(serializedSecretObject);
+        var jsonDeserializedObject = JsonSerializer.Deserialize<Dictionary<string, string>>(serializedSecretObject);
+
+        if (jsonDeserializedObject == null)
+        {
+            throw new ArgumentException("serializedSecretObject is empty", nameof(serializedSecretObject));
+        }
+        
+        jsonDeserializedObject.TryGetValue("FileName", out var fileName);
+        jsonDeserializedObject.TryGetValue("FileContent", out var fileContent);
+        jsonDeserializedObject.TryGetValue("FolderId", out var folderId);
+
+        if (string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(fileContent) || string.IsNullOrEmpty(folderId))
+        {
+            throw new ArgumentException("serializedSecretObject is invalid", nameof(serializedSecretObject));    
+        }
+        
+        return new GoogleDriveSecret(fileName, fileContent, folderId);
     }
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Uploader.Base;
@@ -5,7 +6,8 @@ using Uploader.Models;
 
 namespace Uploader.Uploaders;
 
-public sealed class DropboxUploaderBase(DropboxSecret secret) : UploaderBase
+[ExcludeFromCodeCoverage(Justification = "No way to Mock Values Of Uploader. Will Add Integration tests in the future")]
+public sealed class DropboxUploader(DropboxSecret secret) : UploaderBase
 {
     private DropboxClient GetClient()
     {

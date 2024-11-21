@@ -16,18 +16,18 @@ public static class UploaderFactory
         };
     }
 
-    private static GoogleDriveUploaderBase GetGoogleDriveUploader(CredentialStore store)
+    private static GoogleDriveUploader GetGoogleDriveUploader(CredentialStore store)
     {
         var secret = GoogleDriveSecret.GetDeserializedContent(store.credentialAsJson);
         if (secret is null) throw new ArgumentNullException(nameof(store));
-        return new GoogleDriveUploaderBase(GoogleDriveUploaderBase.GenerateStreamFromString(secret.FileContent),
+        return new GoogleDriveUploader(GoogleDriveUploader.GenerateStreamFromString(secret.FileContent),
             secret.FolderId);
     }
 
-    private static DropboxUploaderBase GetDropboxUploader(CredentialStore store)
+    private static DropboxUploader GetDropboxUploader(CredentialStore store)
     {
         var secret = DropboxSecret.GetDeserializedContent(store.credentialAsJson);
         if (secret is null) throw new ArgumentNullException(nameof(store));
-        return new DropboxUploaderBase(secret);
+        return new DropboxUploader(secret);
     }
 }

@@ -9,16 +9,15 @@ using File = Google.Apis.Drive.v3.Data.File;
 
 namespace Uploader.Uploaders;
 
-public sealed class GoogleDriveUploaderBase(Stream credentialStream, string folderId) : UploaderBase
+[ExcludeFromCodeCoverage(Justification = "No way to Mock Values Of Uploader. Will Add Integration tests in the future")]
+public sealed class GoogleDriveUploader(Stream credentialStream, string folderId) : UploaderBase
 {
-    [ExcludeFromCodeCoverage(Justification =
-        "There are plans to use in the future with just credential file provided by user")]
-    public GoogleDriveUploaderBase(string pathToCredentials, string folderId) : this(
+    public GoogleDriveUploader(string pathToCredentials, string folderId) : this(
         new FileStream(pathToCredentials, FileMode.Open, FileAccess.Read), folderId)
     {
     }
 
-    ~GoogleDriveUploaderBase()
+    ~GoogleDriveUploader()
     {
         credentialStream.Dispose();
     }

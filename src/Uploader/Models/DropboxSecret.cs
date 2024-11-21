@@ -16,8 +16,25 @@ public class DropboxSecret(string refreshToken, string appKey, string appSecret,
         return JsonSerializer.Serialize(dropboxSecretObject);
     }
 
-    public static DropboxSecret? GetDeserializedContent(string serializedSecretObject)
+    public static DropboxSecret GetDeserializedContent(string serializedSecretObject)
     {
-        return JsonSerializer.Deserialize<DropboxSecret>(serializedSecretObject);
+        var jsonDeserializedObject = JsonSerializer.Deserialize<Dictionary<string, string>>(serializedSecretObject);
+
+        if (jsonDeserializedObject == null)
+        {
+            throw new ArgumentException("serializedSecretObject is empty", nameof(serializedSecretObject));
+        }
+        
+        jsonDeserializedObject.TryGetValue("RefreshToken", out var refreshToken);
+        jsonDeserializedObject.TryGetValue("AppKey", out var appKey);
+        jsonDeserializedObject.TryGetValue("AppSecret", out var appSecret);
+        jsonDeserializedObject.TryGetValue("Folder", out var folder);
+
+        if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(appKey) || string.IsNullOrEmpty(appSecret) || string.IsNullOrEmpty(folder))
+        {
+            throw new ArgumentException("serializedSecretObject is invalid", nameof(serializedSecretObject));    
+        }
+        
+        return new DropboxSecret(refreshToken, appKey, appSecret, folder);
     }
 }

@@ -1,3 +1,5 @@
+using Uploader.Models;
+
 namespace Uploader;
 
 public static class Program
