@@ -9,6 +9,9 @@ FACEPALM is a cold-storage solution to provide virtually unlimited encrypted clo
 - Full AES-256 or any self chosen encryption method (including No encryption for non-sensitive documents)
 - Network Drive like Attachment for easy viewing and writing of Files (To be done)
 
+## Supported Platforms
+- Google Drive
+- Dropbox
 
 ## Tech
 
