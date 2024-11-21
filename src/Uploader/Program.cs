@@ -1,6 +1,6 @@
 namespace Uploader;
 
-public class Program
+public static class Program
 {
     static void Main()
     {
