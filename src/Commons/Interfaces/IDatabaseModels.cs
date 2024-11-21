@@ -1,5 +1,3 @@
 namespace Commons.Interfaces;
 
-public interface IDatabaseModels
-{
-}
+public interface IDatabaseModels;

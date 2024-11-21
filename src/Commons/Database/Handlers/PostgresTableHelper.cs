@@ -1,11 +1,9 @@
+using System.Text;
 using Commons.Constants;
 using Commons.Interfaces;
+using Npgsql;
 
 namespace Commons.Database.Handlers;
-
-using Npgsql;
-using System;
-using System.Text;
 
 public static class PostgresTableHelper
 {
@@ -48,7 +46,7 @@ public static class PostgresTableHelper
 
         return sb.ToString();
     }
-    
+
     private static string MapCSharpTypeToPostgresType(Type type)
     {
         if (type == typeof(int) || type.IsEnum) return "INTEGER";

@@ -1,6 +1,5 @@
 using Commons.Constants;
 using Commons.Interfaces;
-using Commons.Models;
 using Npgsql;
 
 namespace Commons.Database.Handlers;

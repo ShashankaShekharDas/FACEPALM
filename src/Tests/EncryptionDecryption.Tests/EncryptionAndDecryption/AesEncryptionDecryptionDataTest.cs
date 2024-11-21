@@ -5,16 +5,16 @@ namespace EncryptionDecryption.Tests.EncryptionAndDecryption;
 
 public class AesEncryptionDecryptionDataTest
 {
-    private const string key = "12345678901234567890123456789012";
-    private const string iv = "1234567890123456";
+    private const string Key = "12345678901234567890123456789012";
+    private const string Iv = "1234567890123456";
 
     [TestCase("")]
     [TestCase("test - input")]
     public void AssertThatAesTextEncryptionReturnsExpectedResult(string plainText)
     {
         // key needs to be one of 128/256 bits. IV -> 16 bytes
-        var encryptedSecret = new AesEncryptionData(key, iv).EncryptData(plainText);
-        var decryptedSecret = new AesDecryptionData(key, iv).DecryptData(encryptedSecret);
+        var encryptedSecret = new AesEncryptionData(Key, Iv).EncryptData(plainText);
+        var decryptedSecret = new AesDecryptionData(Key, Iv).DecryptData(encryptedSecret);
 
         Assert.That(decryptedSecret, Is.EqualTo(plainText));
     }

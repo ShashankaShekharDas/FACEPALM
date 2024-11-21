@@ -6,6 +6,8 @@ namespace Commons.Test.Database.Handlers;
 
 public class GenericPostgresDatabaseHelperTest
 {
+    private readonly GenericPostgresDatabaseHelper<TestDatabase> _helper = new();
+
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
@@ -24,8 +26,6 @@ public class GenericPostgresDatabaseHelperTest
         // Delete all rows from database
         await _helper.DeleteRows(null);
     }
-
-    private readonly GenericPostgresDatabaseHelper<TestDatabase> _helper = new();
 
     [TestCase(true)]
     [TestCase(false)]
@@ -61,6 +61,6 @@ public class GenericPostgresDatabaseHelperTest
 
         var searchResult = await _helper.SearchRows(whereClause, TestDatabase.Deserialize);
 
-        Assert.That(searchResult.Count, Is.EqualTo(expectedCount));
+        Assert.That(searchResult, Has.Count.EqualTo(expectedCount));
     }
 }

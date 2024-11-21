@@ -7,7 +7,7 @@ namespace Commons.Test.Database.Handlers;
 
 public class PostgresTableHelperTest
 {
-    private readonly string _checkIfTableExistsQuery =
+    private const string CheckIfTableExistsQuery =
         "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = '{tableName}' );";
 
     [Test]
@@ -18,7 +18,7 @@ public class PostgresTableHelperTest
 
         await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
         await using var npgsqlCommand =
-            dataSource.CreateCommand(_checkIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
+            dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
         var reader = await npgsqlCommand.ExecuteReaderAsync();
         var tableExists = false;
 
@@ -35,7 +35,7 @@ public class PostgresTableHelperTest
 
         await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
         await using var npgsqlCommand =
-            dataSource.CreateCommand(_checkIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
+            dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
         var reader = await npgsqlCommand.ExecuteReaderAsync();
         var tableExists = true;
 
