@@ -51,6 +51,7 @@ public static class PostgresTableHelper
     {
         if (type == typeof(int) || type.IsEnum) return "INTEGER";
         if (type == typeof(string)) return "TEXT";
+        if (type == typeof(long)) return "NUMERIC";
         throw new NotSupportedException($"C# type {type.Name} is not supported.");
     }
 }

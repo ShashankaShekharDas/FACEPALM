@@ -28,12 +28,14 @@ public sealed class DropboxUploader(DropboxSecret secret) : UploaderBase
         try
         {
             using var stream = new MemoryStream(fileBytes);
-            var uploadFileName = $"{secret.Folder}/{Path.GetFileName(filePath)}";
+            var uploadFileName = $"/{secret.Folder}/{Path.GetFileName(filePath)}";
             await client.Files.UploadAsync(uploadFileName, WriteMode.Overwrite.Instance, body: stream);
             succeeded = true;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error while uploading file {filePath}");
+            Console.WriteLine(ex.StackTrace);
             succeeded = false;
         }
 

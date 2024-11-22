@@ -1,19 +1,20 @@
+using Commons.Constants;
 using Commons.Database;
 
 namespace Commons.Test;
 
 public class WhereClauseTest
 {
-    [TestCase(null, null, "")]
-    [TestCase(null, "123", "")]
-    [TestCase("xyz", null, "WHERE xyz is null")]
-    [TestCase("a", "b", "WHERE a = 'b'")]
-    [TestCase("abc", "123", "WHERE abc = '123'")]
-    [TestCase("abc", "123.456", "WHERE abc = '123.456'")]
+    [TestCase(null, null, "", DatabaseOperator.Equal)]
+    [TestCase(null, "123", "", DatabaseOperator.Equal)]
+    [TestCase("xyz", null, "WHERE xyz is null", DatabaseOperator.Null)]
+    [TestCase("a", "b", "WHERE a = 'b'", DatabaseOperator.Equal)]
+    [TestCase("abc", "123", "WHERE abc = '123'", DatabaseOperator.Equal)]
+    [TestCase("abc", "123.456", "WHERE abc = '123.456'", DatabaseOperator.Equal)]
     public void AssertThatWhereClausesAreGeneratedCorrectly(string? columnName, string? columnValue,
-        string expectedWhereClause)
+        string expectedWhereClause, DatabaseOperator dbOperator)
     {
-        var whereClause = WhereClause.GenerateWhereClause([new WhereClause(columnName, columnValue)]);
+        var whereClause = WhereClause.GenerateWhereClause([new WhereClause(columnName, columnValue, dbOperator)]);
         Assert.That(whereClause, Is.EqualTo(expectedWhereClause));
     }
 }

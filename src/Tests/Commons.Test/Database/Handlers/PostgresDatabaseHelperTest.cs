@@ -1,3 +1,4 @@
+using Commons.Constants;
 using Commons.Database;
 using Commons.Database.Handlers;
 using Commons.Test.Models;
@@ -61,7 +62,7 @@ public class PostgresDatabaseHelperTest
             ["ColB"] = "def"
         });
 
-        List<WhereClause> whereClause = [new(whereClauseColumn, whereClauseValue)];
+        List<WhereClause> whereClause = [new(whereClauseColumn, whereClauseValue, DatabaseOperator.Equal)];
 
         var searchResult = await _helper.SearchRows(nameof(TestDatabase), whereClause);
 

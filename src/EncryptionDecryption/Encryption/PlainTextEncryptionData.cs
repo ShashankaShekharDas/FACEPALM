@@ -9,4 +9,6 @@ public sealed class PlainTextEncryptionData : IEncryptData
     {
         return Encoding.UTF32.GetBytes(plainText);
     }
+
+    public byte[] EncryptData(byte[] plainText) => EncryptData(Convert.ToBase64String(plainText));
 }

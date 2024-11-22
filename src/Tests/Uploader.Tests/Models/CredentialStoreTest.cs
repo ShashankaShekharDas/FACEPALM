@@ -21,8 +21,8 @@ public class CredentialStoreTest
         readerMock.Setup(x => x.GetString(It.Is<int>(index => index == 0))).Returns(guid);
         readerMock.Setup(x => x.GetInt32(It.Is<int>(index => index == 1))).Returns((int)provider);
         readerMock.Setup(x => x.GetString(It.Is<int>(index => index == 2))).Returns(credential);
-        readerMock.Setup(x => x.GetInt32(It.Is<int>(index => index == 3))).Returns(maxSize);
-        readerMock.Setup(x => x.GetInt32(It.Is<int>(index => index == 4))).Returns( usedSize);
+        readerMock.Setup(x => x.GetInt64(It.Is<int>(index => index == 3))).Returns(maxSize);
+        readerMock.Setup(x => x.GetInt64(It.Is<int>(index => index == 4))).Returns( usedSize);
         
         var serializedCredentialStore = CredentialStore.Deserialize(readerMock.Object);
         

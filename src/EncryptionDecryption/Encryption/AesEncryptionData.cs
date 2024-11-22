@@ -48,4 +48,6 @@ public sealed class AesEncryptionData : IEncryptData
 
         return encryptedText;
     }
+
+    public byte[] EncryptData(byte[] plainText) => EncryptData(Convert.ToBase64String(plainText));
 }

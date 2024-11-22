@@ -14,4 +14,10 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Commons\Commons.csproj" />
+      <ProjectReference Include="..\EncryptionDecryption\EncryptionDecryption.csproj" />
+      <ProjectReference Include="..\Uploader\Uploader.csproj" />
+    </ItemGroup>
+
 </Project>

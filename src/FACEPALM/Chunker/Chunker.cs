@@ -4,23 +4,18 @@ namespace FACEPALM.Chunker;
 
 public sealed class Chunker : IChunker
 {
-    private readonly int _chunkSize = 1024 * 1024;
-
-    public List<string> ChunkIncoming(string data)
+    public IEnumerable<string> ChunkIncoming(string data, int chunkSize = 1000000)
     {
-        return data.Split("", _chunkSize).ToList();
+        for (var i = 0; i < data.Length; i += chunkSize)
+        {
+            if (i + chunkSize <= data.Length)
+            {
+                yield return data.Substring(i, chunkSize);
+            }
+            else
+            {
+                yield return data[i..];
+            }
+        }
     }
-
-    #region Constructors
-
-    public Chunker()
-    {
-    }
-
-    public Chunker(int chunkSize)
-    {
-        _chunkSize = chunkSize;
-    }
-
-    #endregion
 }

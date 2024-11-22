@@ -1,3 +1,4 @@
+using Commons.Constants;
 using Commons.Database;
 using Commons.Database.Handlers;
 using Commons.Test.Models;
@@ -57,7 +58,7 @@ public class GenericPostgresDatabaseHelperTest
         };
         await _helper.InsertData(rowsToInsert);
 
-        List<WhereClause> whereClause = [new(whereClauseColumn, whereClauseValue)];
+        List<WhereClause> whereClause = [new(whereClauseColumn, whereClauseValue, DatabaseOperator.Equal)];
 
         var searchResult = await _helper.SearchRows(whereClause, TestDatabase.Deserialize);
 
