@@ -1,22 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FACEPALM", "src\FACEPALM\FACEPALM.csproj", "{BB815ECB-EC81-4DD2-B0CC-6AECF5D68D45}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FACEPALM", "src\FACEPALM\FACEPALM.csproj", "{BB815ECB-EC81-4DD2-B0CC-6AECF5D68D45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption", "src\EncryptionDecryption\EncryptionDecryption.csproj", "{064E1BCE-83AF-4C75-AEB0-3C757980B5AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionDecryption", "src\EncryptionDecryption\EncryptionDecryption.csproj", "{064E1BCE-83AF-4C75-AEB0-3C757980B5AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDecryption.Tests", "src\Tests\EncryptionDecryption.Tests\EncryptionDecryption.Tests.csproj", "{231B6E2E-210C-4CFF-B4D7-66A494F5DDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionDecryption.Tests", "src\Tests\EncryptionDecryption.Tests\EncryptionDecryption.Tests.csproj", "{231B6E2E-210C-4CFF-B4D7-66A494F5DDA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSerializer", "src\DeSerializer\DeSerializer.csproj", "{EFA1CEC0-5FB8-4EB9-ADC0-F31D222D8945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeSerializer", "src\DeSerializer\DeSerializer.csproj", "{EFA1CEC0-5FB8-4EB9-ADC0-F31D222D8945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSerializer.Tests", "src\Tests\DeSerializer.Tests\DeSerializer.Tests.csproj", "{25B5F301-EBD1-4582-8AB1-05E6DBD8BF02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeSerializer.Tests", "src\Tests\DeSerializer.Tests\DeSerializer.Tests.csproj", "{25B5F301-EBD1-4582-8AB1-05E6DBD8BF02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader.Tests", "src\Tests\Uploader.Tests\Uploader.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uploader.Tests", "src\Tests\Uploader.Tests\Uploader.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "src\Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uploader", "src\Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "src\Commons\Commons.csproj", "{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "src\Commons\Commons.csproj", "{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Test", "src\Tests\Commons.Test\Commons.Test.csproj", "{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Test", "src\Tests\Commons.Test\Commons.Test.csproj", "{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD7E57E1-5631-4504-A29D-84B53908B91D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,5 +68,8 @@ Global
 		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6AF5918-04B7-4DCC-9C55-DD078BDB5122}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

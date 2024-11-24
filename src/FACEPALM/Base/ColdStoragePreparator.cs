@@ -28,8 +28,9 @@ public sealed class ColdStoragePreparator : IColdStoragePreparator
         {
             var fileName = Path.GetFileName(file);
             var serializedFileName = Guid.NewGuid().ToString();
-            
-            var encryptedBytes = encryptor.EncryptData(File.ReadAllBytes(file));
+            var fileContentAsBytes = await File.ReadAllBytesAsync(file);
+
+            var encryptedBytes = encryptor.EncryptData(fileContentAsBytes);
             var encryptedString = Convert.ToBase64String(encryptedBytes);
             var chunkedString = _chunker.ChunkIncoming(encryptedString).ToList();
             var fileNameMapping = new FileNameMapping(fileName, serializedFileName, chunkedString.Count);
