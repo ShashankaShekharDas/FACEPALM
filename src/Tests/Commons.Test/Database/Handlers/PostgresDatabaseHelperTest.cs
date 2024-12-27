@@ -13,13 +13,13 @@ public class PostgresDatabaseHelperTest
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
-        await PostgresTableHelper.CreateTableAsync<TestDatabase>();
+        await PostgresTableHelper<TestDatabase>.CreateTableAsync();
     }
 
     [OneTimeTearDown]
     public async Task OneTimeTearDown()
     {
-        await PostgresTableHelper.DeleteTableAsync<TestDatabase>();
+        await PostgresTableHelper<TestDatabase>.DeleteTableAsync();
     }
 
     [TearDown]

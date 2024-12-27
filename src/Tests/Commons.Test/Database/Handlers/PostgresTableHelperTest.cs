@@ -14,7 +14,7 @@ public class PostgresTableHelperTest
     [Order(1)]
     public async Task AsserThatTableCreateStatementCreatesTable()
     {
-        await PostgresTableHelper.CreateTableAsync<TestDatabase>();
+        await PostgresTableHelper<TestDatabase>.CreateTableAsync();
 
         await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
         await using var npgsqlCommand =
@@ -31,7 +31,7 @@ public class PostgresTableHelperTest
     [Order(2)]
     public async Task AssertThatDropStatementDropsTable()
     {
-        await PostgresTableHelper.DeleteTableAsync<TestDatabase>();
+        await PostgresTableHelper<TestDatabase>.DeleteTableAsync();
 
         await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
         await using var npgsqlCommand =

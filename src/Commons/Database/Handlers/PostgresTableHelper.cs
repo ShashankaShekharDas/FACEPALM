@@ -5,12 +5,12 @@ using Npgsql;
 
 namespace Commons.Database.Handlers;
 
-public static class PostgresTableHelper
+public static class PostgresTableHelper<T> where T : IDatabaseModels
 {
-    public static async Task CreateTableAsync<T>() where T : IDatabaseModels
+    public static async Task CreateTableAsync()
     {
         var tableName = typeof(T).Name;
-        var createTableQuery = GenerateCreateTableQuery<T>(tableName);
+        var createTableQuery = GenerateCreateTableQuery(tableName);
 
         await using var connection = new NpgsqlConnection(PostgresDatabaseConstants.ConnectionString);
         await connection.OpenAsync();
@@ -19,7 +19,7 @@ public static class PostgresTableHelper
         await command.ExecuteNonQueryAsync();
     }
 
-    public static async Task DeleteTableAsync<T>() where T : IDatabaseModels
+    public static async Task DeleteTableAsync()
     {
         var tableName = typeof(T).Name;
         var deleteTableQuery = $"DROP TABLE {tableName} CASCADE";
@@ -31,7 +31,7 @@ public static class PostgresTableHelper
         await command.ExecuteNonQueryAsync();
     }
 
-    private static string GenerateCreateTableQuery<T>(string tableName) where T : IDatabaseModels
+    private static string GenerateCreateTableQuery(string tableName)
     {
         var sb = new StringBuilder();
         sb.AppendLine($"CREATE TABLE IF NOT EXISTS {tableName} (");
