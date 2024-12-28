@@ -3,31 +3,40 @@ using Uploader.Enums;
 using Uploader.Models;
 using Uploader.Uploaders;
 
-namespace Uploader.Factory;
-
-public static class UploaderFactory
+namespace Uploader.Factory
 {
-    public static UploaderBase GetUploader(CredentialStore store)
+    public static class UploaderFactory
     {
-        return store.Provider switch
+        public static UploaderBase GetUploader(CredentialStore store)
         {
-            StorageProviderTypes.GoogleDrive => GetGoogleDriveUploader(store),
-            _ => GetDropboxUploader(store)
-        };
-    }
+            return store.Provider switch
+            {
+                StorageProviderTypes.GoogleDrive => GetGoogleDriveUploader(store),
+                _ => GetDropboxUploader(store)
+            };
+        }
 
-    private static GoogleDriveUploader GetGoogleDriveUploader(CredentialStore store)
-    {
-        var secret = GoogleDriveSecret.GetDeserializedContent(store.credentialAsJson);
-        if (secret is null) throw new ArgumentNullException(nameof(store));
-        return new GoogleDriveUploader(GoogleDriveUploader.GenerateStreamFromString(secret.FileContent),
-            secret.FolderId);
-    }
+        private static GoogleDriveUploader GetGoogleDriveUploader(CredentialStore store)
+        {
+            var secret = GoogleDriveSecret.GetDeserializedContent(store.CredentialAsJson);
+            if (secret is null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
 
-    private static DropboxUploader GetDropboxUploader(CredentialStore store)
-    {
-        var secret = DropboxSecret.GetDeserializedContent(store.credentialAsJson);
-        if (secret is null) throw new ArgumentNullException(nameof(store));
-        return new DropboxUploader(secret);
+            return new GoogleDriveUploader(GoogleDriveUploader.GenerateStreamFromString(secret.FileContent),
+                secret.FolderId);
+        }
+
+        private static DropboxUploader GetDropboxUploader(CredentialStore store)
+        {
+            var secret = DropboxSecret.GetDeserializedContent(store.CredentialAsJson);
+            if (secret is null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
+
+            return new DropboxUploader(secret);
+        }
     }
 }

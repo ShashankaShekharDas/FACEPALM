@@ -1,7 +1,8 @@
-namespace EncryptionDecryption.Interfaces;
-
-public interface IEncryptData
+namespace EncryptionDecryption.Interfaces
 {
-    public byte[] EncryptData(string plainText);
-    public byte[] EncryptData(byte[] plainText);
+    public interface IEncryptData
+    {
+        public byte[] EncryptData(string plainText);
+        public byte[] EncryptData(byte[] plainText);
+    }
 }

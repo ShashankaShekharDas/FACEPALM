@@ -1,20 +1,26 @@
 using FACEPALM.Interfaces;
 
-namespace FACEPALM.Chunker;
-
-public sealed class Chunker : IChunker
+namespace FACEPALM.Chunker
 {
-    public IEnumerable<string> ChunkIncoming(string data, int chunkSize = 1000000)
+    public sealed class Chunker : IChunker
     {
-        for (var i = 0; i < data.Length; i += chunkSize)
+        public IEnumerable<string> ChunkIncoming(string data, int chunkSize = 1000000)
         {
-            if (i + chunkSize <= data.Length)
+            if (chunkSize == 0)
             {
-                yield return data.Substring(i, chunkSize);
+                yield return data;
             }
-            else
+
+            for (var i = 0; i < data.Length; i += chunkSize)
             {
-                yield return data[i..];
+                if (i + chunkSize <= data.Length)
+                {
+                    yield return data.Substring(i, chunkSize);
+                }
+                else
+                {
+                    yield return data[i..];
+                }
             }
         }
     }

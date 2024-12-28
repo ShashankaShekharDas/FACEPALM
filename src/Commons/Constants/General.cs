@@ -1,6 +1,7 @@
-namespace Commons.Constants;
-
-public static class General
+namespace Commons.Constants
 {
-    public const string ApplicationName = "FACEPALM";
+    public static class General
+    {
+        public const string ApplicationName = "FACEPALM";
+    }
 }

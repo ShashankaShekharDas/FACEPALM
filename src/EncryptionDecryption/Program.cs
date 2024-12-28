@@ -1,9 +1,10 @@
-﻿namespace EncryptionDecryption;
-
-internal static class Program
+﻿namespace EncryptionDecryption
 {
-    private static void Main(string[] args)
+    internal static class Program
     {
-        throw new NotSupportedException();
+        private static void Main(string[] args)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

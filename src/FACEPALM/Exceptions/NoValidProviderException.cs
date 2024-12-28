@@ -1,3 +1,4 @@
-namespace FACEPALM.Exceptions;
-
-public class NoValidProviderException(string message) : Exception(message);
+namespace FACEPALM.Exceptions
+{
+    public class NoValidProviderException(string message) : Exception(message);
+}

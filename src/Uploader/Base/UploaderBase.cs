@@ -1,9 +1,10 @@
-namespace Uploader.Base;
-
-public abstract class UploaderBase
+namespace Uploader.Base
 {
-    public virtual Task<bool> UploadFile(string filePath)
+    public abstract class UploaderBase
     {
-        throw new NotImplementedException();
+        public virtual Task<bool> UploadFile(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

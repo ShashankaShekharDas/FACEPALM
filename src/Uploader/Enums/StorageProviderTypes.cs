@@ -1,7 +1,8 @@
-namespace Uploader.Enums;
-
-public enum StorageProviderTypes
+namespace Uploader.Enums
 {
-    GoogleDrive = 0,
-    Dropbox = 1
+    public enum StorageProviderTypes
+    {
+        GoogleDrive = 0,
+        Dropbox = 1
+    }
 }

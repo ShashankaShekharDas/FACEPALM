@@ -3,44 +3,53 @@ using Commons.Database.Handlers;
 using Commons.Test.Models;
 using Npgsql;
 
-namespace Commons.Test.Database.Handlers;
-
-public class PostgresTableHelperTest
+namespace Commons.Test.Database.Handlers
 {
-    private const string CheckIfTableExistsQuery =
-        "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = '{tableName}' );";
-
-    [Test]
-    [Order(1)]
-    public async Task AsserThatTableCreateStatementCreatesTable()
+    public class PostgresTableHelperTest
     {
-        await PostgresTableHelper<TestDatabase>.CreateTableAsync();
+        private const string CheckIfTableExistsQuery =
+            "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = '{tableName}' );";
 
-        await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
-        await using var npgsqlCommand =
-            dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
-        var reader = await npgsqlCommand.ExecuteReaderAsync();
-        var tableExists = false;
+        [Test]
+        [Order(1)]
+        public async Task AsserThatTableCreateStatementCreatesTable()
+        {
+            await PostgresTableHelper<TestDatabase>.CreateTableAsync();
 
-        while (await reader.ReadAsync()) tableExists = reader.GetBoolean(0);
+            await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
+            await using var npgsqlCommand =
+                dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}",
+                    nameof(TestDatabase).ToLower()));
+            var reader = await npgsqlCommand.ExecuteReaderAsync();
+            var tableExists = false;
 
-        Assert.That(tableExists, Is.EqualTo(true));
-    }
+            while (await reader.ReadAsync())
+            {
+                tableExists = reader.GetBoolean(0);
+            }
 
-    [Test]
-    [Order(2)]
-    public async Task AssertThatDropStatementDropsTable()
-    {
-        await PostgresTableHelper<TestDatabase>.DeleteTableAsync();
+            Assert.That(tableExists, Is.EqualTo(true));
+        }
 
-        await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
-        await using var npgsqlCommand =
-            dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}", nameof(TestDatabase).ToLower()));
-        var reader = await npgsqlCommand.ExecuteReaderAsync();
-        var tableExists = true;
+        [Test]
+        [Order(2)]
+        public async Task AssertThatDropStatementDropsTable()
+        {
+            await PostgresTableHelper<TestDatabase>.DeleteTableAsync();
 
-        while (await reader.ReadAsync()) tableExists = reader.GetBoolean(0);
+            await using var dataSource = NpgsqlDataSource.Create(PostgresDatabaseConstants.ConnectionString);
+            await using var npgsqlCommand =
+                dataSource.CreateCommand(CheckIfTableExistsQuery.Replace("{tableName}",
+                    nameof(TestDatabase).ToLower()));
+            var reader = await npgsqlCommand.ExecuteReaderAsync();
+            var tableExists = true;
 
-        Assert.That(tableExists, Is.EqualTo(false));
+            while (await reader.ReadAsync())
+            {
+                tableExists = reader.GetBoolean(0);
+            }
+
+            Assert.That(tableExists, Is.EqualTo(false));
+        }
     }
 }

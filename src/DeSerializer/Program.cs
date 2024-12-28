@@ -1,9 +1,10 @@
-﻿namespace Serializer;
-
-internal static class Program
+﻿namespace Serializer
 {
-    private static void Main(string[] args)
+    internal static class Program
     {
-        Console.WriteLine("Hello, World!");
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+        }
     }
 }

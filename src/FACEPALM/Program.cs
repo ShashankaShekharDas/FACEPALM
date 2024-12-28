@@ -1,17 +1,18 @@
-﻿namespace FACEPALM;
-
-internal static class Program
+﻿namespace FACEPALM
 {
-    private static void Main(string[] args)
+    internal static class Program
     {
-        /*
-         * Workflow
-         * Get File
-         * Encrypt
-         * Chunk
-         * Filename : <filename> - <chunk number> - <total chunks> . shas
-         * Store
-         * Metadata of where each file is stored
-         */
+        private static void Main(string[] args)
+        {
+            /*
+             * Workflow
+             * Get File
+             * Encrypt
+             * Chunk
+             * Filename : <filename> - <chunk number> - <total chunks> . shas
+             * Store
+             * Metadata of where each file is stored
+             */
+        }
     }
 }

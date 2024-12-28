@@ -2,18 +2,19 @@ using Commons.Constants;
 using EncryptionDecryption.Encryption;
 using EncryptionDecryption.Interfaces;
 
-namespace EncryptionDecryption.Factory;
-
-public static class EncryptionFactory
+namespace EncryptionDecryption.Factory
 {
-    // Bad way for now params. Move to a class
-    public static IEncryptData GetEncryptor(EncryptionType encryptionType, params string[] encryptInfo)
+    public static class EncryptionFactory
     {
-        return encryptionType switch
+        // Bad way for now params. Move to a class
+        public static IEncryptData GetEncryptor(EncryptionType encryptionType, params string[] encryptInfo)
         {
-            EncryptionType.Plaintext => new PlainTextEncryptionData(),
-            EncryptionType.Aes => new AesEncryptionData(encryptInfo[0], encryptInfo[1]),
-            _ => throw new ArgumentException($"Unsupported encryption type: {encryptionType}")
-        };
+            return encryptionType switch
+            {
+                EncryptionType.Plaintext => new PlainTextEncryptionData(),
+                EncryptionType.Aes => new AesEncryptionData(encryptInfo[0], encryptInfo[1]),
+                _ => throw new ArgumentException($"Unsupported encryption type: {encryptionType}")
+            };
+        }
     }
 }

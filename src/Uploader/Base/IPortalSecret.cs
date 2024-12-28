@@ -1,3 +1,4 @@
-namespace Uploader.Base;
-
-public interface IPortalSecret;
+namespace Uploader.Base
+{
+    public interface IPortalSecret;
+}

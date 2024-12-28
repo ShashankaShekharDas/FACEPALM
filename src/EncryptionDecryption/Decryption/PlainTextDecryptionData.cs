@@ -1,12 +1,13 @@
 using System.Text;
 using EncryptionDecryption.Interfaces;
 
-namespace EncryptionDecryption.Decryption;
-
-public sealed class PlainTextDecryptionData : IDecryptData
+namespace EncryptionDecryption.Decryption
 {
-    public string DecryptData(byte[] encodedByteArray)
+    public sealed class PlainTextDecryptionData : IDecryptData
     {
-        return Encoding.UTF32.GetString(encodedByteArray);
+        public string DecryptData(byte[] encodedByteArray)
+        {
+            return Encoding.UTF32.GetString(encodedByteArray);
+        }
     }
 }

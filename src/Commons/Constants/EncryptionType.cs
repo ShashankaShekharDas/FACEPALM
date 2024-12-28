@@ -1,9 +1,10 @@
 using System.ComponentModel;
 
-namespace Commons.Constants;
-
-public enum EncryptionType
+namespace Commons.Constants
 {
-    [DefaultValue(0)] Plaintext = 0,
-    [DefaultValue(1)] Aes = 1
+    public enum EncryptionType
+    {
+        [DefaultValue(0)] Plaintext = 0,
+        [DefaultValue(1)] Aes = 1
+    }
 }

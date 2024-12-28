@@ -1,10 +1,11 @@
 using Uploader.Models;
 
-namespace FACEPALM.Interfaces;
-
-internal interface IFacepalm
+namespace FACEPALM.Interfaces
 {
-    public Task<Dictionary<string, bool>> UploadFolder(string path);
-    public Task<bool> UploadFile(string path);
-    public Task<bool> UploadFile(string path, CredentialStore credentialStore);
+    internal interface IFacepalm
+    {
+        public Task<Dictionary<string, bool>> UploadFolder(string path);
+        public Task<bool> UploadFile(string path);
+        public Task<bool> UploadFile(string path, CredentialStore credentialStore);
+    }
 }

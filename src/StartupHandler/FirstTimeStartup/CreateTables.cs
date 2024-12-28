@@ -5,31 +5,33 @@ using FACEPALM.Models;
 using System.Reflection;
 using Uploader.Models;
 
-namespace StartupHandler.FirstTimeStartup;
-
-public static class CreateTables
+namespace StartupHandler.FirstTimeStartup
 {
-    //MUST BE UPDATED. WRITE A TEST TO ENFORCE THIS
-    private static List<Type> GetDatabaseModels()
+    public static class CreateTables
     {
-        return
-        [
-            typeof(ChunkInformation),
-            typeof(ChunkUploaderLocation),
-            typeof(FileNameMapping),
-            typeof(CredentialStore)
-        ];
-    }
-    
-    public static void CreateTablesInDatabaseIfNotExists()
-    {
-        foreach (var tableHelperObject in GetDatabaseModels().Select(databaseModel => typeof(PostgresTableHelper<>).MakeGenericType(databaseModel)))
+        //MUST BE UPDATED. WRITE A TEST TO ENFORCE THIS
+        private static List<Type> GetDatabaseModels()
         {
-            var methodRunner =
-                tableHelperObject.GetMethod("CreateTableAsync", BindingFlags.Public | BindingFlags.Static);
-            
-            //Workaround as couldn't use await :)
-            ((Task)methodRunner?.Invoke(null, null)!).Wait();
+            return
+            [
+                typeof(ChunkInformation),
+                typeof(ChunkUploaderLocation),
+                typeof(FileNameMapping),
+                typeof(CredentialStore)
+            ];
+        }
+
+        public static void CreateTablesInDatabaseIfNotExists()
+        {
+            foreach (var tableHelperObject in GetDatabaseModels()
+                         .Select(databaseModel => typeof(PostgresTableHelper<>).MakeGenericType(databaseModel)))
+            {
+                var methodRunner =
+                    tableHelperObject.GetMethod("CreateTableAsync", BindingFlags.Public | BindingFlags.Static);
+
+                //Workaround as couldn't use await :)
+                ((Task)methodRunner?.Invoke(null, null)!).Wait();
+            }
         }
     }
 }

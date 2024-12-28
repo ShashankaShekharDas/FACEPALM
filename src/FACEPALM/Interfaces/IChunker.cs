@@ -1,6 +1,7 @@
-namespace FACEPALM.Interfaces;
-
-public interface IChunker
+namespace FACEPALM.Interfaces
 {
-    public IEnumerable<string> ChunkIncoming(string data, int chunkSize = 1000000);
+    public interface IChunker
+    {
+        public IEnumerable<string> ChunkIncoming(string data, int chunkSize = 1000000);
+    }
 }

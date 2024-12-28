@@ -1,9 +1,14 @@
-namespace Uploader;
+using Uploader.Enums;
+using Uploader.Models;
+using Uploader.Uploaders;
 
-public static class Program
+namespace Uploader
 {
-    private static void Main()
+    public static class Program
     {
-        throw new NotSupportedException();
+        private static async Task Main()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

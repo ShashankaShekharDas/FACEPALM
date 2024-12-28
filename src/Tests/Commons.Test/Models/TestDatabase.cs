@@ -1,18 +1,19 @@
 using Commons.Interfaces;
 using Npgsql;
 
-namespace Commons.Test.Models;
-
-public class TestDatabase(int colA, string colB) : IDatabaseModels
+namespace Commons.Test.Models
 {
-    public int ColA { get; } = colA;
-    public string ColB { get; } = colB;
-
-    public static TestDatabase Deserialize(NpgsqlDataReader reader)
+    public class TestDatabase(int colA, string colB) : IDatabaseModels
     {
-        var colA = reader.GetInt32(0);
-        var colB = reader.GetString(1);
+        public int ColA { get; } = colA;
+        public string ColB { get; } = colB;
 
-        return new TestDatabase(colA, colB);
+        public static TestDatabase Deserialize(NpgsqlDataReader reader)
+        {
+            var colA = reader.GetInt32(0);
+            var colB = reader.GetString(1);
+
+            return new TestDatabase(colA, colB);
+        }
     }
 }
