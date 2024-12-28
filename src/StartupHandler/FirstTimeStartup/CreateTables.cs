@@ -1,27 +1,35 @@
 using Commons.Database.Handlers;
 using Commons.Interfaces;
+using Commons.Models;
+using FACEPALM.Models;
 using System.Reflection;
+using Uploader.Models;
 
 namespace StartupHandler.FirstTimeStartup;
 
 public static class CreateTables
 {
+    //MUST BE UPDATED. WRITE A TEST TO ENFORCE THIS
+    private static List<Type> GetDatabaseModels()
+    {
+        return
+        [
+            typeof(ChunkInformation),
+            typeof(ChunkUploaderLocation),
+            typeof(FileNameMapping),
+            typeof(CredentialStore)
+        ];
+    }
+    
     public static void CreateTablesInDatabaseIfNotExists()
     {
-        var databaseModelType = typeof(IDatabaseModels);
-
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-        foreach (var assembly in assemblies)
+        foreach (var tableHelperObject in GetDatabaseModels().Select(databaseModel => typeof(PostgresTableHelper<>).MakeGenericType(databaseModel)))
         {
-            var typesImplementingInterface = assembly.GetTypes()
-                .Where(t => databaseModelType.IsAssignableFrom(t) && t is { IsInterface: false, IsAbstract: false })
-                .ToList();
-
-            foreach (var executeMethod in typesImplementingInterface.Select(type => typeof(PostgresTableHelper<>).MakeGenericType(type)).Select(genericType => genericType.GetMethod("CreateTableAsync", BindingFlags.Public | BindingFlags.Static)))
-            {
-                executeMethod?.Invoke(null, null);
-            }
+            var methodRunner =
+                tableHelperObject.GetMethod("CreateTableAsync", BindingFlags.Public | BindingFlags.Static);
+            
+            //Workaround as couldn't use await :)
+            ((Task)methodRunner?.Invoke(null, null)!).Wait();
         }
     }
 }

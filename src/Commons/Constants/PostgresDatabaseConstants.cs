@@ -13,4 +13,5 @@ public static class PostgresDatabaseConstants
 
     public static readonly string ConnectionString =
         Environment.GetEnvironmentVariable("PostgresProdConnectionString") ?? "CONNECTION-STRING-NOT-FOUND";
+
 }
