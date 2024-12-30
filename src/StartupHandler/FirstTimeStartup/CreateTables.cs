@@ -10,16 +10,12 @@ namespace StartupHandler.FirstTimeStartup
     public static class CreateTables
     {
         //MUST BE UPDATED. WRITE A TEST TO ENFORCE THIS
-        private static List<Type> GetDatabaseModels()
-        {
-            return
+        private static List<Type> GetDatabaseModels() =>
             [
                 typeof(ChunkInformation),
                 typeof(ChunkUploaderLocation),
-                typeof(FileNameMapping),
                 typeof(CredentialStore)
             ];
-        }
 
         public static void CreateTablesInDatabaseIfNotExists()
         {

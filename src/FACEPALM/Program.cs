@@ -1,8 +1,12 @@
-﻿namespace FACEPALM
+﻿using Commons.Constants;
+using FACEPALM.Base;
+using FACEPALM.Enums;
+
+namespace FACEPALM
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             /*
              * Workflow
@@ -13,6 +17,14 @@
              * Store
              * Metadata of where each file is stored
              */
+
+            var coldStoragePreparator = new ColdStoragePreparator();
+            var facepalmObject = new Facepalm();
+            
+            var temporaryDirectory = await coldStoragePreparator.PrepareFileForStorage("/home/shashanka/Documents/STEAL-Upload/MKBHDWallpapers",
+                FileType.Folder, EncryptionType.Aes, 1000000, "12345678901234567890123456789012", "1234567890123456");
+            await facepalmObject.UploadFolder(temporaryDirectory);
+
         }
     }
 }

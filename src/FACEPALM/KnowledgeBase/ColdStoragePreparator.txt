@@ -1,0 +1,8 @@
+-> This class prepares the file/folder/zip to be uploaded
+
+It performs the following actions 
+1) Writes to a tmp directory
+2) Encrypts it
+3) Breaks the file into chunks of predefined size
+4) All chunks are present in the tmp directory
+5) Next you have to upload

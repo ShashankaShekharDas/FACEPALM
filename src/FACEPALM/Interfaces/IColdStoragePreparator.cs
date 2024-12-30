@@ -5,7 +5,7 @@ namespace FACEPALM.Interfaces
 {
     public interface IColdStoragePreparator
     {
-        public Task<string> PrepareFileForStorage(string fileLocation, FileType fileType, EncryptionType encryptionType,
+        public Task<string> PrepareFileForStorage(string fileLocation, FileType fileType, EncryptionType encryptionType, int chunkSize, 
             params string[] encryptionParameters);
     }
 }

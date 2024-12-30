@@ -1,5 +1,6 @@
 using Commons.Constants;
 using Commons.Database.Handlers;
+using Commons.Models;
 using EncryptionDecryption.Factory;
 using FACEPALM.Enums;
 using FACEPALM.Interfaces;
@@ -10,17 +11,18 @@ namespace FACEPALM.Base
     public sealed class ColdStoragePreparator : IColdStoragePreparator
     {
         private readonly Chunker.Chunker _chunker = new();
-        private readonly GenericPostgresDatabaseHelper<FileNameMapping> _fileNameMappingRepo = new();
+        private readonly GenericPostgresDatabaseHelper<ChunkInformation> _fileChunkInformation = new();
 
         public async Task<string> PrepareFileForStorage(string fileLocation, FileType fileType,
-            EncryptionType encryptionType, params string[] encryptionParameters)
+            EncryptionType encryptionType, int chunkSize, params string[] encryptionParameters)
         {
+            var folderName = Path.GetFileName(fileLocation);
             if (fileType == FileType.File)
             {
                 var temporaryDirectoryPath = CreateTemporaryDirectory();
                 File.Copy(fileLocation, Path.Combine(temporaryDirectoryPath, Path.GetFileName(fileLocation)));
-
                 fileLocation = temporaryDirectoryPath;
+                folderName = Path.GetFileNameWithoutExtension(fileLocation);
             }
 
             var encryptedAndChunkedDirectory = CreateTemporaryDirectory();
@@ -34,9 +36,9 @@ namespace FACEPALM.Base
 
                 var encryptedBytes = encryptor.EncryptData(fileContentAsBytes);
                 var encryptedString = Convert.ToBase64String(encryptedBytes);
-                var chunkedString = _chunker.ChunkIncoming(encryptedString).ToList();
-                var fileNameMapping = new FileNameMapping(fileName, serializedFileName, chunkedString.Count);
-                await _fileNameMappingRepo.InsertData([fileNameMapping]);
+                var chunkedString = _chunker.ChunkIncoming(encryptedString, chunkSize).ToList();
+                var chunkInformation = new ChunkInformation(fileName, folderName, chunkedString.Count, encryptionType, serializedFileName);
+                await _fileChunkInformation.InsertData([chunkInformation]);
                 var index = 0;
 
                 foreach (var chunk in chunkedString)

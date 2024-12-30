@@ -4,6 +4,7 @@ using Commons.Database;
 using Commons.Database.Handlers;
 using FACEPALM.Exceptions;
 using FACEPALM.Interfaces;
+using FACEPALM.Models;
 using Uploader.Factory;
 using Uploader.Models;
 
@@ -13,13 +14,13 @@ namespace FACEPALM.Base
     internal sealed class Facepalm : IFacepalm
     {
         private readonly GenericPostgresDatabaseHelper<CredentialStore> _credentialStoreProvider = new();
+        private readonly GenericPostgresDatabaseHelper<ChunkUploaderLocation> _chunkUploaderLocation = new();
 
         private static List<string> GetAllFilesInDirectory(string directory)
         {
             return Directory.GetFiles(directory).ToList();
         }
-
-        // ISSUE : FOR NOW CHUNK SIZE IS HARDCODED TO 1,000,000 BITS OR 1 MB
+        
         public async Task<Dictionary<string, bool>> UploadFolder(string path)
         {
             var validProviders = await _credentialStoreProvider.SearchRows(
@@ -44,7 +45,13 @@ namespace FACEPALM.Base
 
                 if (uploadResult[file])
                 {
-                    provider.UsedSizeInBytes += 1000000;
+                    // Update used size to database
+                    provider.UsedSizeInBytes += new FileInfo(file).Length;
+                    await _credentialStoreProvider.DeleteRows([new WhereClause("uuid", provider.Uuid, DatabaseOperator.Equal)]);
+                    await _credentialStoreProvider.InsertData([provider]);
+                    
+                    // Insert into table where the file has been uploaded
+                    await _chunkUploaderLocation.InsertData([new ChunkUploaderLocation(Path.GetFileNameWithoutExtension(file), provider.Uuid)]);
                 }
 
                 providerIndex++;
@@ -68,9 +75,6 @@ namespace FACEPALM.Base
             return await UploadFile(path, validProviders.First());
         }
 
-        public async Task<bool> UploadFile(string path, CredentialStore credentialStore)
-        {
-            return await UploaderFactory.GetUploader(credentialStore).UploadFile(path);
-        }
+        public async Task<bool> UploadFile(string path, CredentialStore credentialStore) => await UploaderFactory.GetUploader(credentialStore).UploadFile(path);
     }
 }

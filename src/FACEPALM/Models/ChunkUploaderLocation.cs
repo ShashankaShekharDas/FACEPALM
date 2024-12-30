@@ -1,23 +1,21 @@
 using Commons.Interfaces;
 using Npgsql;
-using Uploader.Enums;
 
 namespace FACEPALM.Models
 {
-    public class ChunkUploaderLocation(string serializedName, int chunkIndex, StorageProviderTypes providerType)
+    public class ChunkUploaderLocation(string uploadedFileName, string uuid)
         : IDatabaseModels
     {
-        public string SerializedName { get; set; } = serializedName;
-        public int ChunkIndex { get; set; } = chunkIndex;
-        public StorageProviderTypes ProviderType { get; set; } = providerType;
+        //UploadedFileName = {serializedName}-{chunkId}.shas
+        public string UploadedFileName { get; set; } = uploadedFileName;
+        public string UploaderUuid { get; set; } = uuid;
 
         public static ChunkUploaderLocation Deserialize(NpgsqlDataReader reader)
         {
             var serializedName = reader.GetString(0);
-            var chunkIndex = reader.GetInt32(1);
-            var providerType = (StorageProviderTypes)reader.GetInt32(2);
+            var uuid = reader.GetString(1);
 
-            return new ChunkUploaderLocation(serializedName, chunkIndex, providerType);
+            return new ChunkUploaderLocation(serializedName, uuid);
         }
     }
 }
