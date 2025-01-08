@@ -7,8 +7,8 @@ using Uploader.Models;
 namespace Uploader.Uploaders
 {
     [ExcludeFromCodeCoverage(Justification =
-        "No way to Mock Values Of Uploader. Will Add Integration tests in the future")]
-    public sealed class DropboxUploader(DropboxSecret secret) : UploaderBase
+        "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]
+    public sealed class DropboxFileHandler(DropboxSecret secret) : FileHandlerBase
     {
         private DropboxClient GetClient()
         {
@@ -38,6 +38,11 @@ namespace Uploader.Uploaders
             }
 
             return succeeded;
+        }
+
+        public override Task<string> DownloadFile(string fileId, string downloadedFileName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

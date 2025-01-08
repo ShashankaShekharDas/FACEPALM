@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -17,7 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Commons\Commons.csproj"/>
         <ProjectReference Include="..\EncryptionDecryption\EncryptionDecryption.csproj"/>
-        <ProjectReference Include="..\Uploader\Uploader.csproj"/>
+        <ProjectReference Include="..\FileHandler\FileHandler.csproj" />
     </ItemGroup>
 
 </Project>

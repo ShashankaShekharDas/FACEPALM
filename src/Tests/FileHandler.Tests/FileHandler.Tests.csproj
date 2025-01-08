@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>Uploader.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Uploader\Uploader.csproj"/>
+        <ProjectReference Include="..\..\FileHandler\FileHandler.csproj" />
     </ItemGroup>
 
 </Project>

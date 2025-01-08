@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeSerializer", "src\DeSeria
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeSerializer.Tests", "src\Tests\DeSerializer.Tests\DeSerializer.Tests.csproj", "{25B5F301-EBD1-4582-8AB1-05E6DBD8BF02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uploader.Tests", "src\Tests\Uploader.Tests\Uploader.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileHandler.Tests", "src\Tests\FileHandler.Tests\FileHandler.Tests.csproj", "{2981CC1D-E7D4-4AA9-A7EA-B88F51AADC0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uploader", "src\Uploader\Uploader.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileHandler", "src\FileHandler\FileHandler.csproj", "{15F38B24-46CC-4753-9425-6C67B9D69675}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "src\Commons\Commons.csproj", "{F2F40B6B-B591-41CD-B1FC-43B869FFD80E}"
 EndProject

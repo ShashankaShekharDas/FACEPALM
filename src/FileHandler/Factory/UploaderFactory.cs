@@ -7,7 +7,7 @@ namespace Uploader.Factory
 {
     public static class UploaderFactory
     {
-        public static UploaderBase GetUploader(CredentialStore store)
+        public static FileHandlerBase GetUploader(CredentialStore store)
         {
             return store.Provider switch
             {
@@ -16,7 +16,7 @@ namespace Uploader.Factory
             };
         }
 
-        private static GoogleDriveUploader GetGoogleDriveUploader(CredentialStore store)
+        private static GoogleDriveHandler GetGoogleDriveUploader(CredentialStore store)
         {
             var secret = GoogleDriveSecret.GetDeserializedContent(store.CredentialAsJson);
             if (secret is null)
@@ -24,11 +24,11 @@ namespace Uploader.Factory
                 throw new ArgumentNullException(nameof(store));
             }
 
-            return new GoogleDriveUploader(GoogleDriveUploader.GenerateStreamFromString(secret.FileContent),
+            return new GoogleDriveHandler(GoogleDriveHandler.GenerateStreamFromString(secret.FileContent),
                 secret.FolderId);
         }
 
-        private static DropboxUploader GetDropboxUploader(CredentialStore store)
+        private static DropboxFileHandler GetDropboxUploader(CredentialStore store)
         {
             var secret = DropboxSecret.GetDeserializedContent(store.CredentialAsJson);
             if (secret is null)
@@ -36,7 +36,7 @@ namespace Uploader.Factory
                 throw new ArgumentNullException(nameof(store));
             }
 
-            return new DropboxUploader(secret);
+            return new DropboxFileHandler(secret);
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Uploader.Tests.Factory
         private const string DropBoxCredential =
             "{\"RefreshToken\" : \"refresh\",\"AppKey\" : \"key\",\"AppSecret\" : \"secret\",\"Folder\" : \"folder\"}";
 
-        [TestCase(StorageProviderTypes.GoogleDrive, GoogleDriveCredential, typeof(GoogleDriveUploader))]
-        [TestCase(StorageProviderTypes.Dropbox, DropBoxCredential, typeof(DropboxUploader))]
+        [TestCase(StorageProviderTypes.GoogleDrive, GoogleDriveCredential, typeof(GoogleDriveHandler))]
+        [TestCase(StorageProviderTypes.Dropbox, DropBoxCredential, typeof(DropboxFileHandler))]
         public void AssertThatFactoryReturnsCorrectType(StorageProviderTypes provider, string serializedSecret,
             Type expectedType)
         {
