@@ -4,7 +4,6 @@ using Commons.Models;
 using EncryptionDecryption.Factory;
 using FACEPALM.Enums;
 using FACEPALM.Interfaces;
-using FACEPALM.Models;
 
 namespace FACEPALM.Base
 {
