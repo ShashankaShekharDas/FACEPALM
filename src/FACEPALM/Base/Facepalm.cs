@@ -5,16 +5,23 @@ using Commons.Database.Handlers;
 using FACEPALM.Exceptions;
 using FACEPALM.Interfaces;
 using FACEPALM.Models;
+using FACEPALM.Services;
 using Uploader.Factory;
 using Uploader.Models;
 
 namespace FACEPALM.Base
 {
     [Description("Facepalm class ONLY HANDLES CHUNKED AND ENCRYPTED FILES. That is why internal")]
-    internal sealed class Facepalm : IFacepalm
+    internal class Facepalm : IFacepalm
     {
         private readonly GenericPostgresDatabaseHelper<CredentialStore> _credentialStoreProvider = new();
         private readonly GenericPostgresDatabaseHelper<ChunkUploaderLocation> _chunkUploaderLocation = new();
+        private readonly ILogger _logger;
+
+        public Facepalm(ILogger? logger = null)
+        {
+            _logger = logger ?? new ConsoleLogger(nameof(Facepalm));
+        }
 
         private static List<string> GetAllFilesInDirectory(string directory)
         {
@@ -23,41 +30,87 @@ namespace FACEPALM.Base
         
         public async Task<Dictionary<string, bool>> UploadFolder(string path)
         {
-            var validProviders = await _credentialStoreProvider.SearchRows(
-                [new WhereClause("maxsizeinbytes - usedsizeinbytes", "5000000", DatabaseOperator.GreaterThanOrEqual)],
-                CredentialStore.Deserialize);
-
-            var allFilesInDirectory = GetAllFilesInDirectory(path);
-            var uploadResult = new Dictionary<string, bool>();
-            var providerIndex = 0;
-
-            foreach (var file in allFilesInDirectory)
+            ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+            
+            if (!Directory.Exists(path))
             {
-                var provider = validProviders[providerIndex % validProviders.Count];
-
-                while (provider.UsedSizeInBytes + 1000000 > provider.MaxSizeInBytes)
-                {
-                    providerIndex++;
-                    provider = validProviders[providerIndex % validProviders.Count];
-                }
-
-                uploadResult[file] = await Task.Run(async () => await UploadFile(file, provider));
-
-                if (uploadResult[file])
-                {
-                    // Update used size to database
-                    provider.UsedSizeInBytes += new FileInfo(file).Length;
-                    await _credentialStoreProvider.DeleteRows([new WhereClause("uuid", provider.Uuid, DatabaseOperator.Equal)]);
-                    await _credentialStoreProvider.InsertData([provider]);
-                    
-                    // Insert into table where the file has been uploaded
-                    await _chunkUploaderLocation.InsertData([new ChunkUploaderLocation(Path.GetFileNameWithoutExtension(file), provider.Uuid)]);
-                }
-
-                providerIndex++;
+                throw new DirectoryNotFoundException($"Directory not found: {path}");
             }
 
-            return uploadResult;
+            _logger.LogInformation("Starting upload process for folder: {Path}", path);
+
+            try
+            {
+                var validProviders = await GetValidProvidersWithRetry();
+                if (validProviders.Count == 0)
+                {
+                    throw new NoValidProviderException("No providers with sufficient space available");
+                }
+
+                _logger.LogInformation("Found {Count} valid providers", validProviders.Count);
+
+                var allFilesInDirectory = GetAllFilesInDirectory(path);
+                _logger.LogInformation("Found {FileCount} files to upload", allFilesInDirectory.Count);
+
+                var uploadResult = new Dictionary<string, bool>();
+                var providerIndex = 0;
+                const long estimatedChunkSize = 1_000_000; // Move magic number to constant
+
+                foreach (var file in allFilesInDirectory)
+                {
+                    try
+                    {
+                        _logger.LogDebug("Processing file: {FileName}", Path.GetFileName(file));
+
+                        var provider = await FindAvailableProvider(validProviders, providerIndex, estimatedChunkSize);
+                        if (provider == null)
+                        {
+                            _logger.LogError("No available provider found for file: {FileName}", Path.GetFileName(file));
+                            uploadResult[file] = false;
+                            continue;
+                        }
+
+                        var fileInfo = new FileInfo(file);
+                        if (!fileInfo.Exists)
+                        {
+                            _logger.LogWarning("File no longer exists, skipping: {FileName}", file);
+                            uploadResult[file] = false;
+                            continue;
+                        }
+
+                        uploadResult[file] = await UploadFile(file, provider);
+
+                        if (uploadResult[file])
+                        {
+                            await UpdateProviderUsage(provider, fileInfo.Length);
+                            await RecordUploadLocation(file, provider.Uuid);
+                            _logger.LogInformation("Successfully uploaded: {FileName}", Path.GetFileName(file));
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Failed to upload: {FileName}", Path.GetFileName(file));
+                        }
+
+                        providerIndex++;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error processing file: {FileName}", Path.GetFileName(file));
+                        uploadResult[file] = false;
+                    }
+                }
+
+                var successCount = uploadResult.Values.Count(success => success);
+                _logger.LogInformation("Upload completed. {SuccessCount}/{TotalCount} files uploaded successfully", 
+                    successCount, uploadResult.Count);
+
+                return uploadResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Critical error during folder upload for path: {Path}", path);
+                throw;
+            }
         }
 
         // Try each file till failure
@@ -76,5 +129,98 @@ namespace FACEPALM.Base
         }
 
         public async Task<bool> UploadFile(string path, CredentialStore credentialStore) => await UploaderFactory.GetUploader(credentialStore).UploadFile(path);
+
+        private async Task<List<CredentialStore>> GetValidProvidersWithRetry(int maxRetries = 3)
+        {
+            var retryCount = 0;
+            const long minimumSpace = 5_000_000; // Move magic number to constant
+
+            while (retryCount < maxRetries)
+            {
+                try
+                {
+                    var providers = await _credentialStoreProvider.SearchRows(
+                        [new WhereClause("maxsizeinbytes - usedsizeinbytes", minimumSpace.ToString(), DatabaseOperator.GreaterThanOrEqual)],
+                        CredentialStore.Deserialize);
+
+                    return providers;
+                }
+                catch (Exception ex)
+                {
+                    retryCount++;
+                    _logger.LogWarning("Failed to retrieve providers (attempt {Attempt}/{MaxAttempts}): {Error}", 
+                        retryCount, maxRetries, ex.Message);
+
+                    if (retryCount >= maxRetries)
+                    {
+                        _logger.LogError(ex, "Failed to retrieve providers after {MaxAttempts} attempts", maxRetries);
+                        throw;
+                    }
+
+                    // Exponential backoff
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, retryCount)));
+                }
+            }
+
+            return [];
+        }
+
+        private async Task<CredentialStore?> FindAvailableProvider(List<CredentialStore> providers, int startIndex, long requiredSpace)
+        {
+            var maxAttempts = providers.Count * 2; // Prevent infinite loops
+            var attempts = 0;
+            var currentIndex = startIndex;
+
+            while (attempts < maxAttempts)
+            {
+                var provider = providers[currentIndex % providers.Count];
+                
+                if (provider.UsedSizeInBytes + requiredSpace <= provider.MaxSizeInBytes)
+                {
+                    return provider;
+                }
+
+                currentIndex++;
+                attempts++;
+            }
+
+            _logger.LogError("All providers are at capacity. Required space: {RequiredSpace} bytes", requiredSpace);
+            return null;
+        }
+
+        private async Task UpdateProviderUsage(CredentialStore provider, long additionalUsage)
+        {
+            try
+            {
+                provider.UsedSizeInBytes += additionalUsage;
+                await _credentialStoreProvider.DeleteRows([new WhereClause("uuid", provider.Uuid, DatabaseOperator.Equal)]);
+                await _credentialStoreProvider.InsertData([provider]);
+                
+                _logger.LogDebug("Updated provider {ProviderId} usage by {AdditionalUsage} bytes", 
+                    provider.Uuid, additionalUsage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update provider usage for provider {ProviderId}", provider.Uuid);
+                throw;
+            }
+        }
+
+        private async Task RecordUploadLocation(string filePath, string providerUuid)
+        {
+            try
+            {
+                var fileName = Path.GetFileNameWithoutExtension(filePath);
+                await _chunkUploaderLocation.InsertData([new ChunkUploaderLocation(fileName, providerUuid)]);
+                
+                _logger.LogDebug("Recorded upload location for file {FileName} to provider {ProviderId}", 
+                    fileName, providerUuid);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to record upload location for file {FileName}", Path.GetFileName(filePath));
+                throw;
+            }
+        }
     }
 }
