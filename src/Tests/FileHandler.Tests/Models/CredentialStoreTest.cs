@@ -1,9 +1,9 @@
 using System.Data.Common;
 using Moq;
-using Uploader.Enums;
-using Uploader.Models;
+using FileHandler.Enums;
+using FileHandler.Models;
 
-namespace Uploader.Tests.Models
+namespace FileHandler.Tests.Models
 {
     public class CredentialStoreTest
     {

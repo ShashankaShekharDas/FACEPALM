@@ -1,4 +1,4 @@
-namespace Uploader.Base
+namespace FileHandler.Base
 {
     public interface IPortalSecret;
 }

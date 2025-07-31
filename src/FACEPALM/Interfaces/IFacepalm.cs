@@ -1,4 +1,4 @@
-using Uploader.Models;
+using FileHandler.Models;
 
 namespace FACEPALM.Interfaces
 {

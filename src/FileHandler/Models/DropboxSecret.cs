@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Uploader.Base;
+using FileHandler.Base;
 
-namespace Uploader.Models
+namespace FileHandler.Models
 {
     public class DropboxSecret(string refreshToken, string appKey, string appSecret, string folderName) : IPortalSecret
     {

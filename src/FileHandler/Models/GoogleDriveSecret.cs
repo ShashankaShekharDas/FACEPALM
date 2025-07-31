@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Uploader.Base;
+using FileHandler.Base;
 
-namespace Uploader.Models
+namespace FileHandler.Models
 {
     //NOT DATABASE CLASS
     public class GoogleDriveSecret(string fileName, string content, string folderId) : IPortalSecret

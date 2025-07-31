@@ -3,7 +3,7 @@ using Commons.Interfaces;
 using Commons.Models;
 using FACEPALM.Models;
 using System.Reflection;
-using Uploader.Models;
+using FileHandler.Models;
 
 namespace StartupHandler.FirstTimeStartup
 {

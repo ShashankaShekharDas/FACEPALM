@@ -1,4 +1,4 @@
-namespace Uploader.Enums
+namespace FileHandler.Enums
 {
     public enum StorageProviderTypes
     {

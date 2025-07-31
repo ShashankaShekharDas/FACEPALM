@@ -5,8 +5,8 @@ using Commons.Database.Handlers;
 using FACEPALM.Exceptions;
 using FACEPALM.Interfaces;
 using FACEPALM.Models;
-using Uploader.Factory;
-using Uploader.Models;
+using FileHandler.Factory;
+using FileHandler.Models;
 
 namespace FACEPALM.Base
 {

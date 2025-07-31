@@ -1,4 +1,4 @@
-﻿namespace Serializer
+namespace DeSerializer
 {
     internal static class Program
     {
