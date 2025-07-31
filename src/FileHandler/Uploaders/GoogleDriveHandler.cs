@@ -5,10 +5,10 @@ using Google.Apis.Download;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Upload;
-using Uploader.Base;
+using FileHandler.Base;
 using File = Google.Apis.Drive.v3.Data.File;
 
-namespace Uploader.Uploaders
+namespace FileHandler.Uploaders
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]

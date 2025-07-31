@@ -1,9 +1,9 @@
 using Commons.Database.Handlers;
 using System.Data.Common;
 using Commons.Interfaces;
-using Uploader.Enums;
+using FileHandler.Enums;
 
-namespace Uploader.Models
+namespace FileHandler.Models
 {
     public class CredentialStore(
         string uuid,

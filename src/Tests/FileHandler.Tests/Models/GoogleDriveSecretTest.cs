@@ -1,6 +1,6 @@
-using Uploader.Models;
+using FileHandler.Models;
 
-namespace Uploader.Tests.Models
+namespace FileHandler.Tests.Models
 {
     public class GoogleDriveSecretTest
     {

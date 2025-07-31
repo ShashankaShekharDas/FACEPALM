@@ -1,9 +1,9 @@
-using Uploader.Base;
-using Uploader.Enums;
-using Uploader.Models;
-using Uploader.Uploaders;
+using FileHandler.Base;
+using FileHandler.Enums;
+using FileHandler.Models;
+using FileHandler.Uploaders;
 
-namespace Uploader.Factory
+namespace FileHandler.Factory
 {
     public static class UploaderFactory
     {

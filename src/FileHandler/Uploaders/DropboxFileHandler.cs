@@ -1,10 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-using Uploader.Base;
-using Uploader.Models;
+using FileHandler.Base;
+using FileHandler.Models;
 
-namespace Uploader.Uploaders
+namespace FileHandler.Uploaders
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]

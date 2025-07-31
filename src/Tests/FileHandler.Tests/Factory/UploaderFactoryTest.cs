@@ -1,9 +1,9 @@
-using Uploader.Enums;
-using Uploader.Factory;
-using Uploader.Models;
-using Uploader.Uploaders;
+using FileHandler.Enums;
+using FileHandler.Factory;
+using FileHandler.Models;
+using FileHandler.Uploaders;
 
-namespace Uploader.Tests.Factory
+namespace FileHandler.Tests.Factory
 {
     public class UploaderFactoryTest
     {
