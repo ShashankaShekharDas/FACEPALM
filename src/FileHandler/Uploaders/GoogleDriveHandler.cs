@@ -91,7 +91,7 @@ namespace FileHandler.Uploaders
                         }
                     case DownloadStatus.NotStarted:
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(progress), progress.Status, "Unexpected download status returned by Google Drive API.");
                 }
             };
             
