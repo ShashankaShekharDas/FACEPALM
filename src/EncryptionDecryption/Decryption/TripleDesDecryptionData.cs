@@ -1,14 +1,15 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using EncryptionDecryption.Interfaces;
 
 namespace EncryptionDecryption.Decryption
 {
-    public class AesDecryptionData : IDecryptData
+    [Obsolete("Triple Des is not a very secure encryption method and might be removed in the future. Ref S5547")]
+    public sealed class TripleDesDecryptionData : IDecryptData
     {
-        private readonly Aes _aes;
+        private readonly TripleDES _tripleDes;
 
-        public AesDecryptionData(string key, string iv)
+        public TripleDesDecryptionData(string key, string iv)
         {
             if (key is not { Length: > 0 })
             {
@@ -20,14 +21,16 @@ namespace EncryptionDecryption.Decryption
                 throw new ArgumentNullException(nameof(iv));
             }
 
-            _aes = Aes.Create();
-            _aes.Key = Encoding.UTF8.GetBytes(key);
-            _aes.IV = Encoding.UTF8.GetBytes(iv);
+#pragma warning disable S5547
+            _tripleDes = TripleDES.Create();
+#pragma warning restore S5547
+            _tripleDes.Key = Encoding.UTF8.GetBytes(key);
+            _tripleDes.IV = Encoding.UTF8.GetBytes(iv);
         }
 
         public string DecryptData(byte[] encodedByteArray)
         {
-            # region Conditions
+            #region Conditions
 
             if (encodedByteArray is not { Length: > 0 })
             {
@@ -36,13 +39,13 @@ namespace EncryptionDecryption.Decryption
 
             #endregion
 
-            #region Decrypt
+            #region Decryption
 
-            var aesDecryptor = _aes.CreateDecryptor(_aes.Key, _aes.IV);
             string plainText;
+            var decryptor = _tripleDes.CreateDecryptor(_tripleDes.Key, _tripleDes.IV);
+
             using var decryptedMemoryStream = new MemoryStream(encodedByteArray);
-            using var decryptedCryptoStream =
-                new CryptoStream(decryptedMemoryStream, aesDecryptor, CryptoStreamMode.Read);
+            using var decryptedCryptoStream = new CryptoStream(decryptedMemoryStream, decryptor, CryptoStreamMode.Read);
             using var decryptedStreamReader = new StreamReader(decryptedCryptoStream);
             plainText = decryptedStreamReader.ReadToEnd();
 
