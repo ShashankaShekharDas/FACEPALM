@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
-        <RootNamespace>Uploader</RootNamespace>
+        <RootNamespace>FileHandler</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

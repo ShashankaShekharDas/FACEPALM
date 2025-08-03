@@ -1,8 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using FileHandler.Base;
 using FileHandler.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FileHandler.Uploaders
 {
