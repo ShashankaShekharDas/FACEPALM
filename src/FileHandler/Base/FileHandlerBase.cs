@@ -1,11 +1,8 @@
 namespace FileHandler.Base
 {
-    public abstract class FileHandlerBase
+    public interface IFileHandlerBase
     {
-        public virtual Task<bool> UploadFile(string filePath)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task<bool> UploadFile(string filePath);
 
         public abstract Task<string> DownloadFile(string fileId, string downloadedFileName);
     }

@@ -8,7 +8,7 @@ namespace FileHandler.Uploaders
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]
-    public sealed class DropboxFileHandler(DropboxSecret secret) : FileHandlerBase
+    public sealed class DropboxFileHandler(DropboxSecret secret) : IFileHandlerBase
     {
         private DropboxClient GetClient()
         {
@@ -17,7 +17,7 @@ namespace FileHandler.Uploaders
             return new DropboxClient(secret.RefreshToken, secret.AppKey, secret.AppSecret, config);
         }
 
-        public override async Task<bool> UploadFile(string filePath)
+        public async Task<bool> UploadFile(string filePath)
         {
             using var client = GetClient();
             var fileBytes = await File.ReadAllBytesAsync(filePath);
@@ -40,7 +40,7 @@ namespace FileHandler.Uploaders
             return succeeded;
         }
 
-        public override Task<string> DownloadFile(string fileId, string downloadedFileName)
+        public Task<string> DownloadFile(string fileId, string downloadedFileName)
         {
             throw new NotImplementedException();
         }

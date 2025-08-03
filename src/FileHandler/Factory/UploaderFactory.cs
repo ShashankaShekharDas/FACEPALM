@@ -7,7 +7,7 @@ namespace FileHandler.Factory
 {
     public static class UploaderFactory
     {
-        public static FileHandlerBase GetUploader(CredentialStore store)
+        public static IFileHandlerBase GetUploader(CredentialStore store)
         {
             return store.Provider switch
             {

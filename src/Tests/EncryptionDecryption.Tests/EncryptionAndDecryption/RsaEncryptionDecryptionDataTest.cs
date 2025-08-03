@@ -12,11 +12,9 @@ namespace EncryptionDecryption.Tests.EncryptionAndDecryption
         [SetUp]
         public void Setup()
         {
-            using (var rsa = RSA.Create())
-            {
-                _privateKey = rsa.ToXmlString(true);  // Include private key
-                _publicKey = rsa.ToXmlString(false);  // Public key only
-            }
+            using var rsa = RSA.Create();
+            _privateKey = rsa.ToXmlString(true);  // Include private key
+            _publicKey = rsa.ToXmlString(false);  // Public key only
         }
 
         [TestCase("")]

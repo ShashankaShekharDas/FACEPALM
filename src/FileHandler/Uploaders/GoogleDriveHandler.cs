@@ -12,7 +12,7 @@ namespace FileHandler.Uploaders
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]
-    public sealed class GoogleDriveHandler(Stream credentialStream, string folderId) : FileHandlerBase
+    public sealed class GoogleDriveHandler(Stream credentialStream, string folderId) : IFileHandlerBase
     {
         public GoogleDriveHandler(string pathToCredentials, string folderId) : this(
             new FileStream(pathToCredentials, FileMode.Open, FileAccess.Read), folderId)
@@ -46,7 +46,7 @@ namespace FileHandler.Uploaders
             });
         }
 
-        public override async Task<bool> UploadFile(string filePath)
+        public async Task<bool> UploadFile(string filePath)
         {
             var driveService = GetDriveService();
             var fileMetaData = new File { Name = Path.GetFileName(filePath), Parents = new List<string> { folderId }};
@@ -65,7 +65,7 @@ namespace FileHandler.Uploaders
             return isUploadSuccess;
         }
 
-        public override async Task<string> DownloadFile(string fileId, string downloadedFileName)
+        public async Task<string> DownloadFile(string fileId, string downloadedFileName)
         {           
             var driveService = GetDriveService();
             var request = driveService.Files.Get(fileId);

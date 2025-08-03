@@ -1,5 +1,6 @@
 ﻿using EncryptionDecryption.Decryption;
 using EncryptionDecryption.Encryption;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace EncryptionDecryption.Tests.EncryptionAndDecryption
 {
