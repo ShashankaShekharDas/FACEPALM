@@ -4,18 +4,15 @@ using Npgsql;
 
 namespace Commons.Models
 {
-    public class ChunkInformation(string fileName, string folderName, int totalChunks, EncryptionType encryption, string serializedName)
+    public class ChunkInformation(string fileName, string folderName, int totalChunks, EncryptionType encryption, string serializedName, string hash)
         : IDatabaseModels
     {
         public string FileName { get; set; } = fileName;
-        // When uploading 1 file, the filename itself is the folder name
         public string FolderName { get; set; } = folderName;
-
-        // Serialized Name is the name given to the file while uploading
-        // can be encrypted, can be uuid.....
         public string SerializedName { get; set; } = serializedName;
         public int TotalChunks { get; set; } = totalChunks;
         public EncryptionType Encryption { get; set; } = encryption;
+        public string Hash { get; set; } = hash; // stores hash of encrypted file to avoid decrypting and then having to calculate hash
 
         public static IDatabaseModels Deserialize(NpgsqlDataReader reader)
         {
@@ -24,8 +21,9 @@ namespace Commons.Models
             var totalChunks = reader.GetInt32(2);
             var encryption = (EncryptionType)reader.GetInt32(3);
             var serializedName = reader.GetString(4);
+            var hash = reader.GetString(5);
 
-            return new ChunkInformation(fileName, folderName, totalChunks, encryption, serializedName);
+            return new ChunkInformation(fileName, folderName, totalChunks, encryption, serializedName, hash);
         }
     }
 }

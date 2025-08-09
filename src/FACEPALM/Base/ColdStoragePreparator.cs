@@ -1,5 +1,7 @@
 using Commons.Constants;
 using Commons.Database.Handlers;
+using Commons.Hashers;
+using Commons.Interfaces;
 using Commons.Models;
 using EncryptionDecryption.Factory;
 using FACEPALM.Enums;
@@ -7,10 +9,11 @@ using FACEPALM.Interfaces;
 
 namespace FACEPALM.Base
 {
-    public sealed class ColdStoragePreparator : IColdStoragePreparator
+    public sealed class ColdStoragePreparator(IFileHasher fileHasher) : IColdStoragePreparator
     {
         private readonly Chunker.Chunker _chunker = new();
         private readonly GenericPostgresDatabaseHelper<ChunkInformation> _fileChunkInformation = new();
+        private readonly IFileHasher _fileHasher = fileHasher ?? throw new ArgumentNullException(nameof(fileHasher));
 
         public async Task<string> PrepareFileForStorage(string fileLocation, FileType fileType,
             EncryptionType encryptionType, int chunkSize, params string[] encryptionParameters)
@@ -36,7 +39,8 @@ namespace FACEPALM.Base
                 var encryptedBytes = encryptor.EncryptData(fileContentAsBytes);
                 var encryptedString = Convert.ToBase64String(encryptedBytes);
                 var chunkedString = _chunker.ChunkIncoming(encryptedString, chunkSize).ToList();
-                var chunkInformation = new ChunkInformation(fileName, folderName, chunkedString.Count, encryptionType, serializedFileName);
+                var fileHash = _fileHasher.ComputeHash(encryptedBytes);
+                var chunkInformation = new ChunkInformation(fileName, folderName, chunkedString.Count, encryptionType, serializedFileName, fileHash);
                 await _fileChunkInformation.InsertData([chunkInformation]);
                 var index = 0;
 

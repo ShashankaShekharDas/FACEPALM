@@ -40,9 +40,38 @@ namespace FileHandler.Uploaders
             return succeeded;
         }
 
-        public Task<string> DownloadFile(string fileId, string downloadedFileName)
+        public async Task<string> DownloadFile(string fileId, string downloadedFileName)
         {
-            throw new NotImplementedException();
+            using var client = GetClient();
+            var memoryStream = new MemoryStream();
+    
+            try
+            {
+                var filePath = $"/{secret.Folder}/{fileId}";
+                var response = await client.Files.DownloadAsync(filePath);
+                await using var responseStream = await response.GetContentAsStreamAsync();
+                await responseStream.CopyToAsync(memoryStream);
+        
+                var temporaryDirectory = Path.Combine(CreateTemporaryDirectory(), downloadedFileName);
+                await using var fileStream = new FileStream(temporaryDirectory, FileMode.Create);
+                memoryStream.Position = 0;
+                await memoryStream.CopyToAsync(fileStream);
+                return temporaryDirectory;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while downloading file {fileId}");
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
         }
+        
+        private static string CreateTemporaryDirectory()
+        {
+            var temporaryDirectoryPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(temporaryDirectoryPath);
+            return temporaryDirectoryPath;
+        }
+
     }
 }

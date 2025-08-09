@@ -103,7 +103,7 @@ namespace FileHandler.Uploaders
         }
         
         private static string CreateTemporaryDirectory()
-    {
+        {
             var temporaryDirectoryPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             Directory.CreateDirectory(temporaryDirectoryPath);
             return temporaryDirectoryPath;

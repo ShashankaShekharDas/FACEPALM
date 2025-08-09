@@ -1,4 +1,5 @@
 ﻿using Commons.Constants;
+using Commons.Hashers;
 using FACEPALM.Base;
 using FACEPALM.Enums;
 
@@ -18,7 +19,7 @@ namespace FACEPALM
              * Metadata of where each file is stored
              */
 
-            var coldStoragePreparator = new ColdStoragePreparator();
+            var coldStoragePreparator = new ColdStoragePreparator(new Sha256Base64Hasher());
             var facepalmObject = new Facepalm();
             
             var temporaryDirectory = await coldStoragePreparator.PrepareFileForStorage("/home/shashanka/Documents/STEAL-Upload/MKBHDWallpapers",
