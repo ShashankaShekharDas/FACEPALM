@@ -4,7 +4,7 @@ using FileHandler.Base;
 using FileHandler.Models;
 using System.Diagnostics.CodeAnalysis;
 
-namespace FileHandler.Uploaders
+namespace FileHandler.Handlers
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]

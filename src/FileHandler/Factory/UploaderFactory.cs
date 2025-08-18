@@ -1,7 +1,7 @@
 using FileHandler.Base;
 using FileHandler.Enums;
+using FileHandler.Handlers;
 using FileHandler.Models;
-using FileHandler.Uploaders;
 
 namespace FileHandler.Factory
 {

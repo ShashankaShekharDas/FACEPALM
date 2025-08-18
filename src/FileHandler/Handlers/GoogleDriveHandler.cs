@@ -8,7 +8,7 @@ using Google.Apis.Upload;
 using System.Diagnostics.CodeAnalysis;
 using File = Google.Apis.Drive.v3.Data.File;
 
-namespace FileHandler.Uploaders
+namespace FileHandler.Handlers
 {
     [ExcludeFromCodeCoverage(Justification =
         "No way to Mock Values Of FileHandler. Will Add Integration tests in the future")]
